@@ -1,0 +1,133 @@
+.container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f3f6fa;
+  overflow: hidden;
+}
+
+.header {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.body {
+  margin-top: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.profile_btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  border: 1px solid black;
+}
+
+.profile_btn:hover {
+  background-color: #5a6268;
+}
+
+.logout_btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  border: 1px solid black;
+}
+
+.logout_btn:hover {
+  background-color: #dc3545;
+}
+
+.title {
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333; /* Dark Gray */
+  text-align: center;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.body_header {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.search_bar {
+  height: 40px;
+  width: 90%;
+  padding-left: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.addCanvas_btn {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  border: 1px solid black;
+}
+
+.addCanvas_btn:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+}
+
+.canvas_list {
+  width: 100%;
+  height: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  justify-content: flex-start;
+}
+
+.header_right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

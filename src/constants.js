@@ -27,6 +27,8 @@ export const BOARD_ACTIONS = {
   UNDO: "UNDO",
   REDO: "REDO",
   CHANGE_TEXT: "CHANGE_TEXT",
+  UPDATE_ELEMENTS: "UPDATE_ELEMENTS",
+  SET_UUID: "SET_UUID",
 };
 
 export const COLORS = {

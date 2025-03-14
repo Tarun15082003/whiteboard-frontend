@@ -4,6 +4,8 @@ import boardContext from "../../store/board-context";
 import toolboxContext from "../../store/toolbox-context";
 import { TOOL_ACTION_TYPES, TOOL_ITEMS } from "../../constants";
 import classes from "./index.module.css";
+import { getSvgPathFromStroke } from "../../utils/element";
+import getStroke from "perfect-freehand";
 
 function Board() {
   const canvasRef = useRef();
@@ -45,6 +47,11 @@ function Board() {
 
         case TOOL_ITEMS.BRUSH: {
           context.fillStyle = element.stroke;
+          if (!element.path && element.points && element.points.length > 0) {
+            element.path = new Path2D(
+              getSvgPathFromStroke(getStroke(element.points))
+            );
+          }
           context.fill(element.path);
           context.restore();
           break;

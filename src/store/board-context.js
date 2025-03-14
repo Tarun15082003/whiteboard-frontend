@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 const boardContext = createContext({
+  uuid: "",
   activeToolItem: "",
   elements: [],
   history: [[]],
@@ -13,6 +14,8 @@ const boardContext = createContext({
   undoActionHandler: () => {},
   redoActionHandler: () => {},
   textAreaBlurHandler: () => {},
+  updateElementsHandler: () => {},
+  setUuidHandler: () => {},
 });
 
 export default boardContext;

@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useReducer, useContext } from "react";
 import boardContext from "./board-context";
 import { BOARD_ACTIONS, TOOL_ACTION_TYPES, TOOL_ITEMS } from "../constants";
 import {
@@ -7,6 +7,10 @@ import {
   isPointNearElement,
 } from "../utils/element";
 import getStroke from "perfect-freehand";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import socketContext from "./socket-context";
 
 const boardReducer = (state, action) => {
   switch (action.type) {
@@ -27,7 +31,8 @@ const boardReducer = (state, action) => {
     case BOARD_ACTIONS.DRAW_DOWN: {
       const { clientX, clientY, stroke, fill, size } = action.payload;
       const new_element = createRoughElement(
-        state.elements.length + 1,
+        // state.elements.length + 1,
+        uuidv4(),
         clientX,
         clientY,
         clientX,
@@ -162,12 +167,29 @@ const boardReducer = (state, action) => {
       };
     }
 
+    case BOARD_ACTIONS.UPDATE_ELEMENTS: {
+      return {
+        ...state,
+        elements: action.payload.elements,
+        history: [action.payload.elements],
+        index: 0,
+      };
+    }
+
+    case BOARD_ACTIONS.SET_UUID: {
+      return {
+        ...state,
+        uuid: action.payload.uuid,
+      };
+    }
+
     default:
       return state;
   }
 };
 
 const initialBoardState = {
+  uuid: null,
   activeToolItem: TOOL_ITEMS.BRUSH,
   toolActionType: TOOL_ACTION_TYPES.NONE,
   elements: [],
@@ -176,10 +198,20 @@ const initialBoardState = {
 };
 
 const BoardProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [boardState, dispatchBoardAction] = useReducer(
     boardReducer,
     initialBoardState
   );
+
+  const { socket, updateSocket } = useContext(socketContext);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    if (socket) socket.disconnect();
+    updateSocket(null);
+    navigate("/login");
+  };
 
   const changeToolHandler = (tool) => {
     dispatchBoardAction({
@@ -187,6 +219,56 @@ const BoardProvider = ({ children }) => {
       payload: {
         tool,
       },
+    });
+  };
+
+  const saveElement = useCallback(
+    async function () {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          toast.error("User not Found");
+          handleLogout();
+          return;
+        }
+        const response = await fetch(
+          `https://whiteboard-backend-au4x.onrender.com/canvas/${boardState.uuid}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              elements: boardState.elements,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (!response.ok) {
+          toast.error("Failed to save Canvas");
+        }
+        if (socket)
+          socket.emit("updateInMemory", { canvasId: boardState.uuid });
+        return data;
+      } catch (err) {
+        console.error("Error saving canvas:", err);
+      }
+    },
+    [handleLogout, boardState]
+  );
+
+  const updateElementsHandler = (elements) => {
+    dispatchBoardAction({
+      type: BOARD_ACTIONS.UPDATE_ELEMENTS,
+      payload: { elements },
+    });
+  };
+
+  const setUuidHandler = (uuid) => {
+    dispatchBoardAction({
+      type: BOARD_ACTIONS.SET_UUID,
+      payload: { uuid },
     });
   };
 
@@ -249,19 +331,22 @@ const BoardProvider = ({ children }) => {
         actionType: TOOL_ACTION_TYPES.NONE,
       },
     });
+    saveElement();
   };
 
   const undoActionHandler = useCallback(() => {
     dispatchBoardAction({
       type: BOARD_ACTIONS.UNDO,
     });
-  }, []);
+    saveElement();
+  }, [saveElement]);
 
   const redoActionHandler = useCallback(() => {
     dispatchBoardAction({
       type: BOARD_ACTIONS.REDO,
     });
-  }, []);
+    saveElement();
+  }, [saveElement]);
 
   const textAreaBlurHandler = (text) => {
     dispatchBoardAction({
@@ -270,9 +355,11 @@ const BoardProvider = ({ children }) => {
         text,
       },
     });
+    saveElement();
   };
 
   const boardContextValue = {
+    uuid: boardState.uuid,
     activeToolItem: boardState.activeToolItem,
     elements: boardState.elements,
     toolActionType: boardState.toolActionType,
@@ -283,6 +370,8 @@ const BoardProvider = ({ children }) => {
     undoActionHandler,
     redoActionHandler,
     textAreaBlurHandler,
+    updateElementsHandler,
+    setUuidHandler,
   };
 
   return (

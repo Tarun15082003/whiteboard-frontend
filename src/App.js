@@ -1,18 +1,41 @@
-import Board from "./components/Board";
-import Toobar from "./components/Toolbar";
-import Toolbox from "./components/Toolbox";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import LoginPage from "./pages/LoginPage";
+import Canvas from "./pages/Canvas";
+import RegisterPage from "./pages/RegisterPage";
+import Dashboard from "./pages/Dashboard";
 import BoardProvider from "./store/BoardProvider";
 import ToolboxProvider from "./store/ToolboxProvider";
+import SocketProvider from "./store/SocketProvider";
 
 function App() {
   return (
-    <BoardProvider>
-      <ToolboxProvider>
-        <Toobar />
-        <Toolbox />
-        <Board />
-      </ToolboxProvider>
-    </BoardProvider>
+    <SocketProvider>
+      <Router>
+        <ToastContainer />
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route
+            path="/canvas/:id"
+            element={
+              <BoardProvider>
+                <ToolboxProvider>
+                  <Canvas />
+                </ToolboxProvider>
+              </BoardProvider>
+            }
+          />
+        </Routes>
+      </Router>
+    </SocketProvider>
   );
 }
 

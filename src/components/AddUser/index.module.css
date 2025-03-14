@@ -1,0 +1,20 @@
+.container {
+  @apply absolute bottom-5 right-5 px-3 py-2 flex rounded border border-gray-400 cursor-pointer;
+  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  outline: none;
+}
+
+.container:hover {
+  @apply bg-blue-200; /* Tailwind's blue-600 */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.container:active {
+  @apply bg-blue-200; /* Tailwind's blue-700 */
+  transform: translateY(0); /* Reset position */
+}

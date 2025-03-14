@@ -1,0 +1,139 @@
+.card {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out;
+  margin-bottom: 15px;
+  padding: 15px;
+  cursor: pointer;
+  border: 1px dashed black;
+  min-height: max-content;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  z-index: 99999;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Roboto", sans-serif;
+  color: #333;
+}
+
+.modified {
+  font-size: 15px;
+  font-weight: 400;
+  font-family: "Roboto", sans-serif;
+  color: #777;
+}
+
+.body {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  color: #555;
+}
+
+.dropdownToggle {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 0.9rem;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 999;
+  margin-top: 8px;
+  padding: 0;
+  list-style: none;
+  border: 1px solid #ddd;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdownMenu li {
+  padding: 6px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdownMenu li:last-child {
+  border-bottom: none;
+}
+
+.body_right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.delete_btn {
+  color: red;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 3px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.delete_btn:hover {
+  @apply bg-blue-200;
+}
+
+.delete_btn:active {
+  @apply bg-blue-200;
+}
+
+.delete_btn:disabled {
+  color: gray;
+  cursor: not-allowed;
+}
+
+.delete_conformation_body {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  padding: 10px;
+  width: 30%;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
