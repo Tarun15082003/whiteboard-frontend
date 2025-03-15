@@ -336,15 +336,13 @@ const BoardProvider = ({ children }) => {
     dispatchBoardAction({
       type: BOARD_ACTIONS.UNDO,
     });
-    saveElement();
-  }, [saveElement]);
+  }, []);
 
   const redoActionHandler = useCallback(() => {
     dispatchBoardAction({
       type: BOARD_ACTIONS.REDO,
     });
-    saveElement();
-  }, [saveElement]);
+  }, []);
 
   const textAreaBlurHandler = (text) => {
     dispatchBoardAction({
